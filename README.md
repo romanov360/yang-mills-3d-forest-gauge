@@ -1,5 +1,7 @@
 # Three-dimensional lattice Yang–Mills in a forest gauge
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23783316.svg)](https://doi.org/10.5281/zenodo.23783316)
+
 This repository holds the paper and every computation it uses:
 
 > Tristan Romanov, *Three-dimensional lattice Yang–Mills theory in a forest gauge: a Dobrushin range and a certified
@@ -115,6 +117,10 @@ with numpy and scipy; sympy for the lower bound; cvxpy for the certificate searc
   note   = {Code and certificates: \url{https://github.com/romanov360/yang-mills-3d-forest-gauge}}
 }
 ```
+
+To cite the code and certificates, use the Zenodo DOI
+[10.5281/zenodo.23783316](https://doi.org/10.5281/zenodo.23783316) (all versions) or
+[10.5281/zenodo.23783317](https://doi.org/10.5281/zenodo.23783317) (v1.0.0, the version the paper cites).
 
 ## License
 
