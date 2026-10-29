@@ -1,0 +1,527 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\definecolor{linkblue}{rgb}{0.05,0.15,0.5}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+  pdftitle={Three-dimensional lattice Yang--Mills theory in a forest gauge},pdfauthor={Tristan Romanov},
+  pdfsubject={Mathematical physics},pdfkeywords={lattice Yang-Mills theory, mass gap, gauge fixing, Dobrushin uniqueness, Bakry-Emery criterion}}
+\urlstyle{same}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\Hess}{\operatorname{Hess}}
+\newcommand{\Ric}{\operatorname{Ric}}
+\newcommand{\Ad}{\operatorname{Ad}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\SU}{\mathrm{SU}}
+\newcommand{\SO}{\mathrm{SO}}
+\newcommand{\U}{\mathrm{U}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+
+\begin{document}
+
+\title[Lattice Yang--Mills theory in a forest gauge]{Three-dimensional lattice Yang--Mills theory\\ in a forest gauge: a Dobrushin range\\ and a certified curvature bound}
+\author{Tristan Romanov}
+\email{romanov360@gmail.com}
+\date{}
+\subjclass[2020]{Primary 81T25; Secondary 82B20, 60K35}
+\keywords{Lattice gauge theory, mass gap, Dobrushin uniqueness, Bakry--\'Emery criterion}
+
+\begin{abstract}
+We study Wilson lattice Yang--Mills theory on $\Z^3$ in a gauge that fixes one link at every site along a
+period-$3$ forest, in which every free link shares a plaquette with exactly seven other free links. Two results
+follow. (A) For $\SU(2)$, a single-link Dobrushin argument with the sharp one-quarter Kantorovich estimate of
+Bhattacharjee and Bhattacharya gives a unique infinite-volume state, invariance, reflection positivity, exponential
+decay of correlations and a transfer-matrix gap $m\ge-\log(7\beta_{\mathrm W}/4)$ for $\beta_{\mathrm W}<4/7$. The
+same estimate gives $\beta_{\mathrm W}<1/3$ in three dimensions without gauge fixing and $\beta_{\mathrm W}<1/2$ in
+the temporal gauge. As Bhattacharjee, Bhattacharya and Lockwood showed for $1/3$ in four dimensions, we show that
+$4/7$ is the ceiling of this argument for every gauge-fixing forest. (B) For every compact group with a faithful unitary representation, the Hessian of
+$\sum_p\Re\Tr Q_p$ restricted to the free links is bounded in absolute value by $h=9.599991$, uniformly in the
+field. The proof is a site-plus-plaquette certificate with rational data: its finite part is checked in exact
+rational arithmetic, and positivity of a two-parameter family of matrices of size at most $12$ is proved with
+outward-rounded interval arithmetic. With the Bakry--\'Emery criterion this gives log-Sobolev inequalities, a unique state and an explicit
+gap for $N|\beta|<\kappa_G/h$; for $\SU(N)$ this is $|\beta|<1/(2h)\approx1/19.20$, compared with $1/32$ of Shen,
+Zhu and Zhu and $1/24$ from the sharp un-gauge-fixed constant. An exact computation at the trivial field shows that
+no bound below $9.3479$ is possible in this gauge. All statements are at strong coupling and fixed lattice spacing.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Let $\Lambda\subset\Z^3$ be a box with oriented links $E$ and plaquettes $P$, and let $G$ be a compact connected Lie
+group with a faithful unitary representation $\rho:G\to\U(N)$, through which we identify $G$ with a subgroup of
+$\U(N)$. The Wilson measure is
+\begin{equation}\label{eq:measure}
+\mu_{\Lambda,\beta}(dQ)=Z^{-1}\exp\Big(N\beta\sum_{p\in P}\Re\Tr Q_p\Big)\prod_{e\in E}dQ_e ,
+\end{equation}
+with normalised Haar measure $dQ_e$ and plaquette holonomy $Q_p=Q_{e_1}Q_{e_2}Q_{e_3}^*Q_{e_4}^*$. For $\SU(N)$ the
+conventional coupling is $\beta_{\mathrm W}=2N/g^2=N^2\beta$. We use the bi-invariant metric
+$\ip XY=-\Tr(XY)$ on the Lie algebra; $\kappa_G$ denotes the least Ricci curvature of $G$ in this metric
+($\kappa_{\SU(N)}=N/2$, $\kappa_{\SO(N)}=(N-2)/4$).
+
+Two methods give a mass gap at strong coupling with explicit constants. The Bakry--\'Emery
+method of Shen, Zhu and Zhu~\cite{SZZ} needs $\kappa_G>N|\beta|\,\sup|\Hess S_0|$, where
+$S_0=\sum_p\Re\Tr Q_p$; their bound $|\Hess S_0|\le8(d-1)$ gives $|\beta|<1/32$ for $\SU(N)$ in $d=3$. The sharp
+un-gauge-fixed constant is $4d$~\cite{BB-zen}, that is $12$, giving $1/24$. The Dobrushin method compares the
+conditional laws of single links. For $\SU(2)$ the sharp quarter estimate of Bhattacharjee and
+Bhattacharya~\cite{BB-zen} gives $\beta_{\mathrm W}<2/9$ in $d=4$, where a link has $18$ partners; the same count in
+$d$ dimensions, with $6(d-1)$ partners, gives $\beta_{\mathrm W}<2/(3(d-1))$, that is $1/3$ in $d=3$. In unrefereed
+work~\cite{BBL}, Bhattacharjee, Bhattacharya and Lockwood showed that both methods improve in four dimensions after
+fixing the gauge on a forest of links, which reduces the number of partners of a link and the size of the Hessian.
+In $d=4$ they obtain $\beta_{\mathrm W}<1/3$ for $\SU(2)$ with single links, prove that $1/3$ is the ceiling of the
+single-link argument in every forest gauge, and pass it with blocks of three links ($\beta_{\mathrm W}\le0.345$); they
+bound $|\Hess S_0|$ by $29/2$ for every $N$; and for $\SU(3)$ they prove a single-link Kantorovich estimate, certified
+by a rigorous computation, that gives $\beta_{\mathrm W}\le3/4$, and $0.76$ with blocks~\cite[Thms.~1--7]{BBL}. We carry
+out the corresponding programme in three dimensions for the single-link and curvature methods, where the combinatorics
+are different and, as it turns out, more favourable.
+
+\subsection*{Results}
+Section~\ref{sec:forest} describes a period-$3$ forest $F$ on $\Z^3$, found and analysed in our earlier
+note~\cite{R}, with the following properties: every site is the head of exactly one link of $F$; every plaquette
+contains one or two links of $F$, in proportion $2:1$; and every free link shares a plaquette with exactly seven other
+free links. The temporal gauge gives eight, and no gauge fixing gives twelve. The counts are checked in Lean~4.
+
+\begin{theorem}[$\SU(2)$, Dobrushin]\label{thm:A}
+Let $G=\SU(2)$ and $0\le\beta_{\mathrm W}<\frac47$. For every gauge-invariant local observable $O$ the expectations
+$\mu_{\Lambda,\beta}(O)$ converge, along every sequence of boxes exhausting $\Z^3$, to a limit $\omega(O)$. The state
+$\omega$ is invariant under translations and lattice rotations and reflections, and it is reflection positive.
+Truncated correlations of Lipschitz gauge-invariant observables decay at every rate below
+$-\log(7\beta_{\mathrm W}/4)$, and the transfer matrix has spectral gap
+\[
+m\ \ge\ -\log\tfrac{7\beta_{\mathrm W}}4\ >0 .
+\]
+For $-\frac47<\beta_{\mathrm W}<0$ all statements except reflection positivity and the gap hold. For every
+gauge-fixing forest the single-link Kantorovich coefficients of $\SU(2)$ violate the weighted Dobrushin condition at
+$|\beta_{\mathrm W}|\ge\frac47$ (Proposition~\ref{prop:ceiling}).
+\end{theorem}
+
+\begin{theorem}[Curvature in the gauge]\label{thm:B}
+For every field $Q\in\U(N)^{E}$ with $Q_e=I$ on $F$ and every finitely supported tangent vector $v=(X_eQ_e)$ with $X_e=0$ for $e\in F$ (here $E$ is the set of links of $\Z^3$),
+\[
+|\Hess S_0(v,v)|\ \le\ h\,|v|^2,\qquad h=\tfrac{9599991}{1000000}=9.599991 .
+\]
+The same holds for every closed subgroup $G\subset\U(N)$. Consequently, if $N|\beta|<\kappa_G/h$, the qualitative conclusions of
+Theorem~\ref{thm:A} hold (limit, invariance, and for $\beta\ge0$ reflection positivity), with the rate and gap given below, the gauge-fixed measures satisfy a
+log-Sobolev inequality uniformly in the box, and correlations decay at every rate below
+\[
+m_G(\beta)=\operatorname{arccosh}\Big(1+\tfrac17\Big(\tfrac{\kappa_G}{N|\beta|}-h\Big)\Big),
+\]
+which is also a lower bound for the gap when $\beta>0$. For $\SU(N)$ the condition is $|\beta|<1/(2h)=1/19.199982$:
+$\beta_{\mathrm W}<0.2083$ for $\SU(2)$ and $\beta_{\mathrm W}<0.4687$ for $\SU(3)$.
+\end{theorem}
+
+\begin{proposition}[Lower bound]\label{prop:lower}
+For $G=\SU(N)$, $N\ge2$, and either sign, the supremum of $\pm\Hess S_0(v,v)/|v|^2$ over boxes, fields with
+$Q_F=I$ and free tangent vectors is at least $9.347955586999\ldots$, the largest root of
+\[
+x^9-35x^8+505x^7-3901x^6+17538x^5-46770x^4+72344x^3-60490x^2+22788x-1944 .
+\]
+\end{proposition}
+
+So the optimal constant $h_F$ in this gauge lies in $[9.3479,\,9.6000]$, and no curvature argument in this gauge based on a bound for $\sup|\Hess S_0|$ goes
+beyond $|\beta|<1/18.6959$ for $\SU(N)$.
+
+\begin{table}[t]
+\caption{Strong-coupling ranges for three-dimensional lattice Yang--Mills theory in the conventional coupling
+$\beta_{\mathrm W}=N^2\beta$. Entries marked $^*$ rest on unrefereed results. The $\SU(3)$ Dobrushin estimate
+of~\cite[Thm.~6]{BBL} is proved in $d=4$ only and is not listed; see the paragraph on prior work below.}
+\label{tab:ranges}
+\begin{tabular}{lcc}
+\hline
+Method & $\SU(2)$ & $\SU(3)$\\
+\hline
+Bakry--\'Emery, $|\Hess S_0|\le16$~\cite{SZZ} & $0.125$ & $0.281$\\
+Bakry--\'Emery, sharp constant $12$~\cite{BB-zen}$^*$ & $0.167$ & $0.375$\\
+Bakry--\'Emery, forest and plaquette-wise Cauchy--Schwarz, $c_F=11$~\cite{R} & $0.182$ & $0.409$\\
+Bakry--\'Emery, forest and certificate, $h=9.599991$ (Theorem~\ref{thm:B})$^*$ & $0.208$ & $0.468$\\
+\quad ceiling for any curvature bound in this gauge, $h_F\ge9.3479$ & $0.214$ & $0.481$\\
+Dobrushin, sharp quarter, no gauge fixing~\cite{BB-zen}$^*$ & $0.333$ & --\\
+Dobrushin, sharp quarter, temporal gauge (Remark~\ref{rem:temporal})$^*$ & $0.5$ & --\\
+Dobrushin, sharp quarter, forest $F$ (Theorem~\ref{thm:A})$^*$ & $0.571$ & --\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection*{Relation to prior work}
+The forest idea, the two methods and the idea of a ceiling for the single-link argument in every forest gauge are
+those of~\cite{BBL,BB-zen}, which treat $d=4$ (and, without gauge fixing, general $d$). We have not found
+three-dimensional gauge-fixed results there or elsewhere. As far as we know, the following are new: the forest $F$ with
+seven partners and its optimality, Theorem~\ref{thm:A}, the value $4/7$ of the ceiling in $d=3$, the certificate
+method of Section~\ref{sec:cert}, and the bounds $9.3479\le h_F\le9.6000$. Theorem~\ref{thm:A} depends on the sharp
+quarter of~\cite{BB-zen} and on the passage from a Dobrushin bound to a state with a gap in~\cite{BBL}, both
+unrefereed. We have checked the steps we use and state precisely what we take from them (Section~\ref{sec:state}).
+Theorem~\ref{thm:B} as a Hessian bound is self-contained. For the consequences we use the Bakry--\'Emery
+criterion~\cite{BE} and the decay and limit arguments of~\cite{SZZ,BBL}.
+
+For $\SU(3)$, Theorem~\ref{thm:B} is not the strongest result one should expect. The single-link estimate
+of~\cite[Thm.~6]{BBL} bounds the Kantorovich modulus of the one-link law of $\SU(3)$ uniformly over staple sums, and
+in $d=4$ every free link has twelve partners and lies in six plaquettes. In $d=3$ without gauge fixing a link also has
+twelve partners but lies in only four plaquettes, and in the gauge $F$ it has seven partners. If the modulus bound
+is monotone in the size of the staple sum, as its construction suggests, the argument should give at least
+$\beta_{\mathrm W}\le3/4$ for three-dimensional $\SU(3)$. We have not checked the certified computation behind it,
+and we do not claim this. The interest of Theorem~\ref{thm:B} lies in its uniformity in the group, in the
+log-Sobolev inequality, and in the method.
+
+\subsection*{What this is not}
+All results are at strong coupling on a lattice of fixed spacing. They do not address the continuum limit or the Clay
+problem~\cite{JW}. In three dimensions the continuum theory is believed to be gapped, but nothing here is uniform in
+the lattice spacing.
+
+\section{The forest}\label{sec:forest}
+
+Label the directions $0,1,2$. For $\mu:\Z^3\to\{0,1,2\}$ let $F_\mu=\{(x-e_{\mu(x)},\mu(x)):x\in\Z^3\}$, where
+$(y,a)$ is the link from $y$ to $y+e_a$. The link $(y,a)$ is fixed iff $\mu(y+e_a)=a$.
+
+\begin{lemma}
+$F_\mu$ contains no cycle, for every $\mu$.
+\end{lemma}
+
+\begin{proof}
+On a cycle in $F_\mu$, let $x$ be a site of largest coordinate sum. Both links of the cycle at $x$ join $x$ to a
+site of smaller coordinate sum, so both are of the form $(x-e_a,a)$ and have head $x$. But $x$ is the head of only
+one link of $F_\mu$.
+\end{proof}
+
+We take $\mu$ $3$-periodic, with values on $\{0,1,2\}^3$ (lexicographic order, first coordinate most significant)
+given by the string \texttt{210102120102120210120210102}, and write $F=F_\mu$. In a box, $F\cap E(\Lambda)$ is a
+forest. Two distinct links share at most one plaquette. Call two free links \emph{partners} if they share a
+plaquette.
+
+\begin{proposition}\label{prop:counts}
+Per period cell there are $81$ plaquettes, $54$ with one link of $F$ and $27$ with two, and $54$ free links. Each
+free link lies in four plaquettes and has exactly seven partners in $\Z^3$, and at most seven in a box. In the
+temporal gauge $\mu\equiv0$ every free link has eight partners, and without gauge fixing it has twelve.
+\end{proposition}
+
+\begin{proof}
+A finite check over one period cell, done by an independent Python script and by \texttt{decide~+kernel} in Lean~4
+(Appendix~\ref{app:files}); the proofs pass under Lean~4.19.0 (no axioms) and Lean~4.35.0 (only \texttt{propext}). A free link $e$ in a plaquette with
+$a_p$ free links has $a_p-1$ partners there, and the Lean file checks that $\sum_{p\ni e}a_p=11$, so
+$\sum_{p\ni e}(a_p-1)=7$. In a box, plaquettes are only removed.
+\end{proof}
+
+\section{Gauge fixing and the infinite-volume state}\label{sec:state}
+
+\begin{lemma}[\cite{BBL,R}]\label{lem:gauge}
+Let $\mu^F_{\Lambda,\beta}$ be the measure on the free links $E'=E(\Lambda)\setminus F$ with density proportional to
+$\exp(N\beta S_0(I_F,Q'))$. For every bounded measurable gauge-invariant $O$,
+$\mu_{\Lambda,\beta}(O)=\mu^F_{\Lambda,\beta}(O(I_F,\cdot))$.
+\end{lemma}
+
+The proof is the usual one: on each tree of the forest, a gauge transformation depending only on $Q_F$ sets the
+links of $F$ to $I$. Haar measure is invariant under the resulting translations of the free links.
+
+On $\Z^3$, let $\gamma^F$ be the specification on the free links in which $\gamma^F_e$ resamples $Q_e$ from the law
+with density proportional to $\exp(N\beta\sum_{p\ni e}\Re\Tr Q_p)$ given the other free links, with $Q_F=I$. Fix a
+bi-invariant metric $\delta$ on $G$ (for $\SU(2)$ the chordal metric on $S^3$). The Kantorovich coefficient of $e'$
+on $e$ is
+\[
+C_{ee'}=\sup\frac{W_1(\gamma^F_e(\cdot\mid Q),\gamma^F_e(\cdot\mid Q'))}{\delta(Q_{e'},Q'_{e'})},
+\]
+over pairs of configurations that differ only at $e'$. It vanishes unless $e,e'$ are partners.
+
+\begin{proposition}[{\cite[Prop.~11]{BBL}}, three-dimensional version]\label{prop:state}
+If every row and column of $(C_{ee'})$ sums to at most $\alpha<1$, then: $\gamma^F$ has exactly one Gibbs measure
+$\mu_F$; for every gauge-invariant local $O$ the limit $\omega(O)=\lim_\Lambda\mu_{\Lambda,\beta}(O)$ exists along every
+sequence of boxes exhausting $\Z^3$ and equals $\mu_F(O(I_F,\cdot))$; $\omega$ is invariant under translations and
+the lattice symmetry group; for $\beta\ge0$ it is reflection positive in hyperplanes through sites and through link
+midpoints; truncated correlations of gauge-invariant local Lipschitz observables decay at every rate
+$\lambda<-\log\alpha$; and for $\beta\ge0$ the transfer matrix has spectral gap at least $-\log\alpha$.
+\end{proposition}
+
+\begin{proof}[Comments on the proof]
+The proof in~\cite{BBL} is written for $\Z^4$ but uses the dimension only in one place. That place is the count of
+active links within distance $R$ of an observable, which grows like $R^4$ there and like $R^3$ here. The ingredients
+are as follows. The Dobrushin comparison lemma is dimension-free. The free-boundary limit is defined through
+Lemma~\ref{lem:gauge}, so the forest is never translated and invariance follows because every translate of an
+exhausting sequence of boxes is again exhausting. Reflection positivity holds for the un-gauge-fixed measures in
+reflection-symmetric boxes~\cite{OS} and passes to the limit. The gap follows from decay of correlations and
+reflection positivity by the Osterwalder--Schrader reconstruction~\cite{OS}. The forest never has to be imposed on a
+torus, where it would close into cycles.
+\end{proof}
+
+\section{\texorpdfstring{$\SU(2)$}{SU(2)} up to four sevenths}\label{sec:su2}
+
+\begin{proof}[Proof of Theorem~\ref{thm:A}]
+Identify $\SU(2)$ with the unit quaternions, with the chordal metric. For a free link $e$ and $p\ni e$ let $s_p$ be
+the staple (the product of the other three links of $p$, with $Q_F=I$), oriented so that
+$N\beta\Re\Tr Q_p=4\beta\ip{Q_e}{\bar s_p}_{\R^4}$. The conditional law of $Q_e$ is the von Mises--Fisher law
+$\nu_b(dx)\propto e^{\ip xb}dx$ on $S^3$ with $b=4\beta\sum_{p\ni e}\bar s_p$. Changing a partner $e'$ by $\delta$ in
+the chordal metric moves one staple by the same chordal distance (multiplication by unit quaternions is an isometry
+of $\R^4$), so $b$ moves by at most $4|\beta|\delta$. The sharp quarter~\cite{BB-zen},~\cite[Thm.~91]{BBL},
+$W_1(\nu_b,\nu_{b'})\le\frac14|b-b'|$, gives $C_{ee'}\le|\beta|$. By Proposition~\ref{prop:counts} every row and
+column has at most seven nonzero entries, so $\alpha\le7|\beta|=\frac74|\beta_{\mathrm W}|$, and
+Proposition~\ref{prop:state} applies for $|\beta_{\mathrm W}|<\frac47$.
+\end{proof}
+
+\begin{proposition}[Ceiling]\label{prop:ceiling}
+Let $F'$ be any set of links of $\Z^3$ without cycles. For $\SU(2)$ in the gauge $F'$, the Dobrushin coefficient of
+two free links that share a plaquette is exactly $|\beta|$. If a positive weight $w$ satisfies $Cw\le\alpha w$, then
+$\alpha\ge7|\beta|$. So no single-link Kantorovich argument reaches $|\beta_{\mathrm W}|=\frac47$ in any forest gauge,
+and in the gauge $F$ the bound $\frac47$ is the limit of the argument. This is the three-dimensional analogue
+of~\cite[Thm.~2]{BBL}.
+\end{proposition}
+
+\begin{proof}
+For the box $\Lambda_n$ of side $n$ let $C_n$ be the principal submatrix on its free links. Then $C_nw\le\alpha w$
+there, and the Collatz--Wielandt inequality gives $\rho(C_n)\le\alpha$. Since $C_n$ is symmetric, $\rho(C_n)$ is at
+least its mean row sum. The box has $3n^3-O(n^2)$ links, $P=3n^3-O(n^2)$ plaquettes and $n^3$ sites. A forest has
+fewer links than sites, so the number $a$ of free links is at least $2n^3-O(n^2)$. Let $a_p$ be the number of free
+links of $p$; then $\sum_pa_p=4a-O(n^2)$, and the row sums of $C_n$ add up to $|\beta|\sum_pa_p(a_p-1)$. For integers
+$k(k-1)-(4k-6)=(k-2)(k-3)\ge0$, hence
+\[
+\frac{|\beta|}a\sum_pa_p(a_p-1)\ \ge\ \frac{|\beta|}a\big(4\textstyle\sum_pa_p-6P\big)
+\ =\ |\beta|\Big(16-\frac{6P}a\Big)-o(1)\ \ge\ 7|\beta|-o(1).
+\]
+So $\alpha\ge7|\beta|$, once the coefficients are shown to equal $|\beta|$. (Plain convexity would only give
+$\frac{20}3|\beta|$; integrality matters.)
+
+The proof of Theorem~\ref{thm:A} gives $C_{ee'}\le|\beta|$ in every forest. For the reverse inequality let $e$ be a
+free link and $e'$ a partner, sharing the plaquette $p_0$. The staples of the four plaquettes through $e$ use pairwise
+disjoint sets of links. At most one staple consists of fixed links only, since two such staples together with the
+endpoints of $e$ would close a cycle in $F'$. A staple containing a free link takes every value in $\SU(2)$ as that
+link varies, independently of the other staples. The staple $s_0$ of $p_0$ contains $e'$. Fix $s_0=u$ and choose the
+other staples so that $b=0$: if one of them is fixed, it is $\pm1$ and the other two must add up to $-u\mp1$, which has
+norm at most $2$ and is therefore a sum of two unit quaternions; if none is fixed, the three remaining staples can
+add up to $-u$. Varying $e'$ moves $s_0$ along any tangent direction, and $b$ by $4\beta$ times that displacement. At
+$b=0$ the derivative of $\nu_b$ in a direction $h$ has Kantorovich norm exactly
+$\frac14|h|$~\cite{BB-zen},~\cite[Thm.~91]{BBL}, so $C_{ee'}\ge|\beta|$.
+\end{proof}
+
+\begin{remark}\label{rem:temporal}
+In the temporal gauge every free link has eight partners (Proposition~\ref{prop:counts}), and the same proof gives
+$|\beta_{\mathrm W}|<\frac12$.
+\end{remark}
+
+\section{A certified curvature bound}\label{sec:cert}
+
+\subsection{Plaquette forms}
+Let $p=(e_1,e_2,e_3,e_4)$ with $e_1=(x,\mu)$, $e_2=(x+e_\mu,\nu)$, $e_3=(x+e_\nu,\mu)$, $e_4=(x,\nu)$, and perturb
+$Q_i\mapsto e^{tX_i}Q_i$. Moving the exponentials through the links gives
+\begin{gather*}
+\Re\Tr Q_p(t)=\Re\Tr\big(e^{tY_1}e^{tY_2}We^{-tY_3}e^{-tY_4}\big),\\
+Y_1=X_1,\quad Y_2=\Ad(Q_1)X_2,\quad Y_3=\Ad(Q_4)X_3,\quad Y_4=X_4,
+\end{gather*}
+with $W=Q_p$. Let $f_p(Y,W)$ be the second derivative at $t=0$, so that $\Hess S_0(v,v)=\sum_pf_p$. It is a real
+quadratic form in $Y\in\mathfrak u(N)^4$, real-linear in $W$, and $f_p(Y,-W)=-f_p(Y,W)$.
+
+\subsection{Site forms}
+At a site $y$ consider the six \emph{ends}
+\[
+o_\mu(y)=X_{(y,\mu)},\qquad i_\mu(y)=\Ad(Q^*_{(y-e_\mu,\mu)})X_{(y-e_\mu,\mu)}.
+\]
+Ends of fixed links are zero. A direct computation shows that the four perpendicular pairs of ends at the corners
+of $p$ are
+\begin{align*}
+\ip{Y_1}{Y_4}&=\ip{o_\mu}{o_\nu}(x), & \ip{Y_1}{Y_2}&=\ip{i_\mu}{o_\nu}(x+e_\mu),\\
+\ip{Y_3}{Y_4}&=\ip{o_\mu}{i_\nu}(x+e_\nu), & \ip{Y_2}{WY_3W^*}&=\ip{i_\nu}{i_\mu}(x+e_\mu+e_\nu),
+\end{align*}
+and every perpendicular pair of ends at a site occurs at exactly one corner of one plaquette. Inside a box this
+plaquette lies in the box.
+
+\begin{lemma}\label{lem:cert}
+Let $G_y$ be real symmetric positive semidefinite $6\times6$ matrices indexed by the ends at $y$, with
+$G_y[o_\mu,i_\mu]=0$. For each plaquette let $c_p(Y,W)$ be the sum over its four corners of $2G_{\mathrm{corner}}[a,b]$
+times the corresponding inner product above. Suppose there are numbers $a_{p,r}\ge0$, for the free links $r$ of $p$,
+such that for every $W\in\U(N)$ and $Y$ with $Y_r=0$ on fixed links
+\begin{equation}\label{eq:plaq}
+f_p(Y,W)+c_p(Y,W)\ \le\ \sum_ra_{p,r}|Y_r|^2 .
+\end{equation}
+Then $|\Hess S_0(v,v)|\le h|v|^2$ with $h=\max_e\big(\sum_{p\ni e}a_{p,e}+G_{\mathrm{tail}(e)}[o,o]+G_{\mathrm{head}(e)}[i,i]\big)$.
+\end{lemma}
+
+\begin{proof}
+Since $G_y\ge0$ and the Gram matrix of the ends is positive semidefinite,
+\[
+0\le\sum_y\sum_{a,b}G_y[a,b]\ip{\mathrm{end}_a}{\mathrm{end}_b}
+=\sum_pc_p+\sum_e\big(G_{\mathrm{tail}(e)}[o,o]+G_{\mathrm{head}(e)}[i,i]\big)|X_e|^2 .
+\]
+Summing~\eqref{eq:plaq} over $p$, with $|Y_r|=|X_r|$, gives $\Hess S_0(v,v)\le h|v|^2$. Replacing $W$ by $-W$ in
+\eqref{eq:plaq} changes the sign of $f_p$ and leaves $c_p$ unchanged, since $WY_3W^*$ is unchanged. This gives the
+other sign.
+\end{proof}
+
+\subsection{Reduction to \texorpdfstring{$\U(2)$}{U(2)}}
+Conjugating all $Y_i$ and $W$ by one unitary changes nothing, so we may take $W=\operatorname{diag}(w_1,\dots,w_N)$.
+Every term of $f_p+c_p$ has the form $\Re\Tr(Y_iD_1Y_jD_2)$ with $D_1,D_2$ diagonal, that is
+$\Re\sum_{a,b}(Y_i)_{ab}(Y_j)_{ba}\,\phi_{ab}$, where $\phi_{ab}$ depends only on $w_a,w_b$. So~\eqref{eq:plaq}
+splits into independent inequalities, one for each diagonal entry $a$ and one for each pair $\{a,b\}$ of
+off-diagonal entries, and $|Y|^2$ splits the same way. Each piece is the restriction of the $\U(2)$ inequality at
+$W=\operatorname{diag}(w_a,w_b)$ to a subspace. Hence~\eqref{eq:plaq} for $\U(2)$ and all
+$W=\operatorname{diag}(e^{i\varphi_1},e^{i\varphi_2})$ implies it for every $\U(N)$, and by restriction for every
+$G\subset\U(N)$. In real coordinates (an orthonormal basis of $\mathfrak u(2)$) it states that a symmetric matrix
+$M_p(\varphi)$ of size $4k_p$ is positive semidefinite, $k_p\in\{2,3\}$ being the number of free links of $p$.
+
+\subsection{The certificate}
+By periodicity it suffices to give $G_y$ for the $27$ sites and $a_{p,r}$ for the $81$ plaquettes of a period cell.
+We found them by semidefinite programming with cutting planes in $\varphi$ and rounded them to rationals with
+denominator $10^6$. The following checks were done in exact rational arithmetic: each $G_y$ is positive definite
+(positive pivots in an $LDL^{T}$ factorisation); $G_y[o_\mu,i_\mu]=0$; $a\ge0$; and the per-link maximum in
+Lemma~\ref{lem:cert} is $h=9599991/1000000$.
+
+It remains to check $M_p(\varphi)\ge0$ for all $\varphi\in[0,2\pi)^2$. For $|\varphi_a-\varphi'_a|\le r$ one has
+$\|W-W'\|_{\mathrm{op}}\le r$. Since $f_p$ is linear in $W$,
+$|f_p(Y,W)-f_p(Y,W')|\le(\sum_i|Y_i|)^2\|W-W'\|\le4|Y|^2\|W-W'\|$, and the far corner moves by at most
+$|k_{23}|\cdot2|Y_2||Y_3|\|W-W'\|$, where $k_{23}$ is its coefficient. So
+\[
+\lambda_{\min}M_p(\varphi')\ \ge\ \lambda_{\min}M_p(\varphi)-(4+|k_{23}|)\,r .
+\]
+We cover the torus of phases by squares, starting from a $64\times64$ grid and subdividing adaptively; a square of
+half-width $r$ is accepted when $M_p-(4+|k_{23}|)r\,I$ is positive definite at its centre. This check is done in
+outward-rounded interval arithmetic. The matrices $D_p$, $C_{14},C_{12},C_{34}$ and the coefficient matrices of the
+trigonometric terms are exact rationals (computed symbolically and exactly symmetric), and so are the $k$'s. The
+values of $\cos$ and $\sin$ at the centres, which are rational multiples of $\pi$, are enclosed by the ball
+arithmetic of Arb. All operations are done on pairs of doubles, with every endpoint moved outward by one ulp after
+each operation, and the shift $(4+|k_{23}|)r$ is rounded up. Gaussian elimination without pivoting is then carried
+out in this interval arithmetic: if every pivot interval is positive, every matrix in the interval matrix has
+positive pivots, so the symmetric matrix $M_p-(4+|k_{23}|)rI$ is positive definite. All $81$ plaquettes were
+accepted with $26{,}371{,}504$ squares and at most six subdivisions. This proves $M_p(\varphi)>0$ for every
+$\varphi$.
+
+\begin{remark}[Checks of the cover]
+A second mode of the same program encloses $\cos$ and $\sin$ over the whole square instead of at its centre, which
+needs no Lipschitz estimate. An earlier floating-point run of the cover (LAPACK eigenvalues) accepted the same squares,
+with least excess $4.3\times10^{-8}$ over the Lipschitz shift; a grid evaluation gives
+$\min_{p,\varphi}\lambda_{\min}M_p(\varphi)\approx0.0079$. The same floating-point pipeline also accepts certificates
+for $h=9.699992$ and $h=10.000001$. The same program re-checks the finite part of the certificate file in exact
+rational arithmetic (positive definiteness of every $G_y$, $a\ge0$, the per-link maximum $h$) independently of the
+search. As adversarial tests, the Lipschitz ratio $\|M_p(\varphi)-M_p(\varphi')\|/((4+|k_{23}|)\max_a|\varphi_a-\varphi'_a|)$
+never exceeded $0.75$ on $162{,}000$ random pairs; and lowering the weights of the tightest plaquette by $0.016$, which
+makes its matrix indefinite, is rejected by both modes, while lowering them by $0.004$ is accepted.
+\end{remark}
+
+\begin{proof}[Proof of Theorem~\ref{thm:B}]
+The Hessian bound is Lemma~\ref{lem:cert} with the certificate and the reduction above. A box uses only the
+plaquettes inside it, which only lowers the per-link totals, and the corner pairs of its links lie in its
+plaquettes. The product $G^{E'}$ has Ricci curvature at least $\kappa_G$, so the Bakry--\'Emery condition holds with
+$K=\kappa_G-hN|\beta|>0$, uniformly in the box. This gives the log-Sobolev inequality~\cite{BE}.
+
+For decay, the limit and the gap we follow the proof of~\cite[Thm.~5]{BBL}. It rests on a weighted gradient
+bound~\cite[Lem.~24]{BBL} with weights $w_e=e^{\lambda d_e}$, where $d_e$ is the graph distance from $e$ to the support
+of the observable in the graph whose edges join partners, so that $|d_e-d_{e'}|\le1$ for partners. The constant is
+\[
+K_\lambda=\kappa_G-N|\beta|\big(h+P(\cosh\tfrac\lambda2-1)\big),
+\]
+where $P$ is the number of partners and the off-diagonal Hessian blocks have norm at most $N|\beta|$. Here $P=7$
+(Proposition~\ref{prop:counts}). The interpolations $(1-s)S_\Lambda+sS_{\Lambda'}$ between boxes, used for the limit,
+satisfy the same Hessian bound because it is linear. The count of links at graph distance $k$ grows like $k^2$
+instead of $k^3$. For $\lambda<\lambda^*$, where $K_{\lambda^*}=0$, \cite[Lem.~25]{BBL} gives decay
+$e^{-\lambda D/2}/K_\lambda$ at distance $D$, so the decay rate is $m_G(\beta)=\lambda^*/2$. Reflection positivity, invariance and the
+gap follow as in Proposition~\ref{prop:state}.
+\end{proof}
+
+\begin{remark}
+For $\SU(2)$, Theorem~\ref{thm:A} has the larger range. Theorem~\ref{thm:B} is the result for $N\ge3$ and for other
+groups. For $\SU(3)$ in four dimensions~\cite[Thm.~6]{BBL} proves a single-link Kantorovich estimate by a
+certified computation; we have not adapted it to three dimensions. For $\SO(N)$, $N\ge3$, the condition reads
+$|\beta|<(N-2)/(4Nh)$.
+\end{remark}
+
+\section{The lower bound}\label{sec:lower}
+
+\begin{proof}[Proof of Proposition~\ref{prop:lower}]
+Take $Q\equiv I$ and $X_e=\xi_eZ$ with $Z\in\mathfrak{su}(2)\subset\mathfrak{su}(N)$, $|Z|=1$, $\xi_e=0$ on $F$.
+Then $f_p=\Re\Tr((d\xi)_p^2Z^2)=-(d\xi)_p^2$, so $-\Hess S_0(v,v)=\|d\xi\|^2$. For the other sign let
+$J=\operatorname{diag}(-1,-1,1,\dots,1)$ and choose, in a box, a $\{I,J\}$-valued field with every plaquette equal to
+$J$ (e.g.\ $Q_{(x,\mu)}=J^{x_0+\dots+x_{\mu-1}}$). Gauge-fix it on $F$ with a $\{I,J\}$-valued gauge transformation, as in
+Lemma~\ref{lem:gauge}; this leaves the plaquettes equal to $J$. Since $\Ad(J)Z=Z$ and $JZ^2=-Z^2$, now
+$\Hess S_0(v,v)=+\|d\xi\|^2$. So both signs reach $\sup\|d\xi\|^2/\|\xi\|^2$ over free $\xi$. Truncated Bloch waves
+on large boxes show that this supremum is at least the top eigenvalue of the Bloch matrix $B(k)^*B(k)$ at any
+momentum $k$. At $k=(\pi,\pi,\pi)$ with respect to the period-$3$ cell, $B$ is an integer $81\times54$ matrix. The
+characteristic polynomial of $B^TB$ factors over $\mathbb{Q}$ into $(x-6)^2(x-4)^2$, two squared octics and two
+nonics. The largest root, isolated by exact interval refinement to $10^{-12}$, is that of the nonic in the statement.
+\end{proof}
+
+\begin{remark}[Numerical evidence on the true constant]
+Gradient ascent of $\pm\lambda_{\mathrm{ext}}$ of the gauge-fixed $\SU(2)$ Hessian, over Bloch-periodic fields from
+random, abelian and near-identity starts, found no field above $9.348$. Abelian fields on the $3$-periodic torus
+reach $9.048$, and the best values for the $+$ sign from generic starts were $8.24$--$8.74$. On $41$ random,
+abelian and trivial fields all eigenvalues lie in $[-8.58,6.19]$. This suggests $h_F=9.3479\ldots$, attained at the
+trivial (and $J$-flux) field, but we have no proof.
+\end{remark}
+
+\section{Checks}
+
+Besides the exact parts of the proof, the following independent checks were made.
+\begin{enumerate}
+\item The rewriting of $\Re\Tr Q_p(t)$ and the identity behind Lemma~\ref{lem:cert}, summed over the $3$-periodic
+torus, agree with an independently coded Hessian on random $\SU(2)$ fields to $5.7\times10^{-14}$.
+\item The inequality~\eqref{eq:plaq} with the certified data holds at $4000$ random $\U(3)$ holonomies and
+$\mathfrak u(3)$ vectors, with least normalised slack $0.338$. This checks the reduction to $\U(2)$.
+\item The forest counts are checked in Lean~4 and in Python. Lean also checks the control count in the temporal gauge.
+\end{enumerate}
+
+\section{Discussion}
+
+In four dimensions every plaquette of the best forest has exactly one fixed link and every free link has twelve
+partners~\cite{BBL}. In three dimensions the best forests mix plaquettes with one and with two fixed links, and the
+integrality argument of Proposition~\ref{prop:ceiling} shows that seven partners is optimal. This is why the
+three-dimensional gain is larger: from $\frac13$ to $\frac47$ for $\SU(2)$, and from $\frac1{24}$ to $\frac1{19.2}$ in
+the curvature range. The certificate method of Section~\ref{sec:cert} is general. It replaces a hand-made Hessian
+estimate by a finite semidefinite problem with an exact check, and it could be applied to other gauges, other
+dimensions or plaquette blocks. Closing the remaining gap between $9.3479$ and $9.6000$ is a finite but larger
+computation. None of this approaches the weak-coupling regime relevant to the continuum limit.
+
+\appendix
+\section{Files}\label{app:files}
+The code, certificates and logs are in the public repository~\cite{code},
+\[\text{\url{https://github.com/romanov360/yang-mills-3d-forest-gauge}}.\]
+Its top-level directory contains:
+{\sloppy
+\begin{itemize}
+\item \texttt{lean/ForestGauge3.lean}: the counts of Proposition~\ref{prop:counts} by \texttt{decide +kernel}
+(checked under Lean~4.19.0 and 4.35.0; at most the axiom \texttt{propext}).
+\item \texttt{torus3d.py}, \texttt{structure3d.py}: the forest, the partner counts and the gauge-fixed Hessian.
+\item \texttt{certify3d.py}: search, exact rounding and the all-phase check. \texttt{cert\_h9.6.npy}, \texttt{cert\_h9.7.npy} and
+\texttt{cert\_h10.npy} hold the rational certificates, and the \texttt{.log} files of the same names the runs; \texttt{cert\_h9.5.log} records a search at $9.5$ (margin $10^{-3}$, finitely many cuts) that found no certificate.
+\item \texttt{cert\_interval.py}: the interval-arithmetic proof of positivity for all phases; the runs are in the
+\texttt{cert\_interval\_*.log} files, the exact finite check in \texttt{cert\_finite.out}; \texttt{adversarial\_interval.py} (output \texttt{adversarial\_interval.out}) runs the tests of the remark above.
+\item \texttt{validate\_cert.py}: the checks of the last section.
+\item \texttt{identity\_exact.py}, \texttt{bloch\_identity.py}: the exact lower bound.
+\item \texttt{bloch3d.py}, \texttt{climb3d.py}: the numerical searches for the true constant.
+\end{itemize}
+\par}
+The directory \texttt{earlier-note} holds the note~\cite{R} with its code (including the Hessian routines
+\texttt{hessian.py} and \texttt{fasthess.py} that \texttt{torus3d.py} imports) and outputs.
+
+\subsection*{Acknowledgements and AI disclosure}
+An AI assistant (Claude, Anthropic) was used for the literature search, for the numerical and Lean computations, and
+for drafting. The author is responsible for the content. We thank the authors of~\cite{BB-zen,BBL} for
+making their work public.
+
+\begin{thebibliography}{99}
+\bibitem{BB-zen} D.~Bhattacharjee and U.~Bhattacharya, Mass gap of lattice Yang--Mills theory up to the Dobrushin
+ceiling, in \emph{Lattice Yang--Mills theory: spacing-uniform obstructions, the mass gap up to the Dobrushin ceiling,
+and Lean certificate}, Zenodo, release v2.0.2, 2026, doi:10.5281/zenodo.23449466 (unrefereed).
+\bibitem{BBL} D.~Bhattacharjee, U.~Bhattacharya and J.~M.~Lockwood, Yang--Mills mass gap in 4D: lattice $\SU(N)$ and every
+compact simple group, Zenodo, October 2026, doi:10.5281/zenodo.23729004 (unrefereed); code at
+\texttt{github.com/creelie/4Y-M}.
+\bibitem{BE} D.~Bakry and M.~\'Emery, Diffusions hypercontractives, in \emph{S\'eminaire de Probabilit\'es XIX},
+Lecture Notes in Math.\ 1123, Springer, 1985, 177--206.
+\bibitem{code} T.~Romanov, \texttt{yang-mills-3d-forest-gauge}: code, certificates and Lean files for this paper,
+GitHub repository, 2026, \url{https://github.com/romanov360/yang-mills-3d-forest-gauge}.
+\bibitem{JW} A.~Jaffe and E.~Witten, Quantum Yang--Mills theory, Clay Mathematics Institute Millennium Problem
+description, 2000.
+\bibitem{OS} K.~Osterwalder and E.~Seiler, Gauge field theories on a lattice, Ann.\ Physics 110 (1978), 440--471.
+\bibitem{R} T.~Romanov, Gauge-fixing forests and the Bakry--\'Emery regime for lattice Yang--Mills theory: an
+independent derivation, note, October 2026; \texttt{earlier-note/paper/paper.pdf} in~\cite{code}.
+\bibitem{SZZ} H.~Shen, R.~Zhu and X.~Zhu, A stochastic analysis approach to lattice Yang--Mills at strong coupling,
+Comm.\ Math.\ Phys.\ 400 (2023), 805--851; arXiv:2204.12737.
+\end{thebibliography}
+
+\end{document}

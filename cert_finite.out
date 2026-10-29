@@ -1,0 +1,4 @@
+certificate cert_h9.6.npy: h = 9599991/1000000 = 9.599991; mode finite; initial grid 64 x 64
+finite part (exact): 27 site matrices G_y positive definite, weights >= 0, maximum of 54 per-link totals = 9599991/1000000 (matches the stated h)
+certificate cert_h9.57.npy: h = 9569991/1000000 = 9.569991; mode finite; initial grid 64 x 64
+finite part (exact): 27 site matrices G_y positive definite, weights >= 0, maximum of 54 per-link totals = 9569991/1000000 (matches the stated h)

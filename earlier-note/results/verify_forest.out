@@ -1,0 +1,13 @@
+PASS d=4: fixed set is a forest on the 4^4 box (192 fixed of 768 edges)
+PASS d=4: max_e c_e = 18 <= claimed c_F = 18; fixed-count histogram per plaquette {1: 864}
+PASS d=4 6^4 box: all plaquettes have exactly one fixed link: {1}; max c_e = 18
+PASS d=4: gauge fixing sets all F-links to I (True) and preserves the action (True)
+PASS d=4: gauge-fixed Hessian spectrum at a random config in [-6.199, 6.533] within [-18, 18]
+PASS d=4: gauge-fixed Hessian vs finite differences -424.41568 vs -424.41567
+PASS d=3: fixed set is a forest on the 6^3 box (180 fixed of 540 edges)
+PASS d=3: max_e c_e = 11 <= claimed c_F = 11; fixed-count histogram per plaquette {1: 300, 2: 150}
+PASS d=3: gauge fixing sets all F-links to I (True) and preserves the action (True)
+PASS d=3: gauge-fixed Hessian spectrum at a random config in [-5.477, 5.123] within [-11, 11]
+PASS d=3: gauge-fixed Hessian vs finite differences -45.10486 vs -45.10486
+
+0 failures

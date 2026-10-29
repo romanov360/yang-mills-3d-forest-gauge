@@ -1,0 +1,5 @@
+building exact coefficient matrices ...
+  done in 1.1s
+certificate cert_h9.57.npy: h = 9569991/1000000 = 9.569991; mode box; initial grid 64 x 64
+  plaquette  0: proved, depth 7, squares so far 1200616
+  plaquette  1: proved, depth 9, squares so far 10032048

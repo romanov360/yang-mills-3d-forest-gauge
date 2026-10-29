@@ -1,0 +1,6 @@
+'plaq_ok' depends on axioms: [propext]
+'one_count' depends on axioms: [propext]
+'two_count' depends on axioms: [propext]
+'free_count' depends on axioms: [propext]
+'coeff_eq' depends on axioms: [propext]
+'temporal3_ok' depends on axioms: [propext]

@@ -1,0 +1,13 @@
+d=3 period=2: best c_F = 12 (OPTIMAL); temporal gauge 8d-12 = 12; edge (SZZ) 8(d-1) = 16; averaging lower bound 10.67
+   mu pattern: 22222222
+d=3 period=3: best c_F = 11 (OPTIMAL); temporal gauge 8d-12 = 12; edge (SZZ) 8(d-1) = 16; averaging lower bound 10.67
+   mu pattern: 210102120102120210120210102
+d=3 period=4: best c_F = 12 (FEASIBLE); temporal gauge 8d-12 = 12; edge (SZZ) 8(d-1) = 16; averaging lower bound 10.67
+   mu pattern: 0000000000000020000000000000020000000000000020000000000000000002
+d=3 period=6: best c_F = 12 (FEASIBLE); temporal gauge 8d-12 = 12; edge (SZZ) 8(d-1) = 16; averaging lower bound 10.67
+d=4 period=2: best c_F = 18 (OPTIMAL); temporal gauge 8d-12 = 20; edge (SZZ) 8(d-1) = 24; averaging lower bound 18.00
+   mu pattern: 0212331001332120
+d=4 period=3: best c_F = 20 (FEASIBLE); temporal gauge 8d-12 = 20; edge (SZZ) 8(d-1) = 24; averaging lower bound 18.00
+   mu pattern: 000000000000010000000000000000010000000000000000000000000000000000000000000010000
+d=4 period=4: best c_F = 20 (FEASIBLE); temporal gauge 8d-12 = 20; edge (SZZ) 8(d-1) = 24; averaging lower bound 18.00
+   mu pattern: 0200000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000

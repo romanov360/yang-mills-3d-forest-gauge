@@ -1,0 +1,5 @@
+PASS exactness d=3: full action with temporal links = I 10.768010 = S_ax 10.768010
+PASS exactness d=4: full action with temporal links = I -0.864366 = S_ax -0.864366
+PASS Hessian vs finite differences d=3: -18.579499 vs -18.579499
+PASS Hessian vs finite differences d=4: 34.590417 vs 34.590417
+PASS d=3 L=2 T=3: alternating config 11.4142; adversarial sup 11.1137; rigorous bound 8d-12 = 12; 4d = 12

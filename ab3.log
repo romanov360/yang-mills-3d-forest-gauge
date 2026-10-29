@@ -1,0 +1,8 @@
+lambda_max start 0: 8.843076
+lambda_max start 1: 8.621969
+lambda_max start 2: 8.781241
+L=3 abelian: sup lambda_max = 8.843076
+-lambda_min start 0: 8.894927
+-lambda_min start 1: 8.746947
+-lambda_min start 2: 9.048025
+L=3 abelian: sup -lambda_min = 9.048025

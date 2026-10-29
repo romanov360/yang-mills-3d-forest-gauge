@@ -1,0 +1,6 @@
+  round 0: eps on cuts = 0.05998, min on grid 96 = -0.10665
+  round 1: eps on cuts = 0.03834, min on grid 96 = 0.01626
+  round 2: eps on cuts = 0.03376, min on grid 96 = 0.03093
+search: h0 = 9.69999, margin eps = 0.033755
+rounded: exact per-link maximum h = 1212499/125000 = 9.699992
+all phases: every plaquette matrix positive definite (4126752 squares, least slack 2.723e-07) -> PROVED

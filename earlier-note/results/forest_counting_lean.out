@@ -1,0 +1,5 @@
+'perfect4_ok' depends on axioms: [propext]
+'coeff4_ok' depends on axioms: [propext]
+'coeff3_ok' depends on axioms: [propext]
+'temporal4_ok' depends on axioms: [propext]
+exit=0

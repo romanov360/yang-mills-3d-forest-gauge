@@ -1,0 +1,418 @@
+\documentclass[11pt]{amsart}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\Hess}{\operatorname{Hess}}
+\newcommand{\Ric}{\operatorname{Ric}}
+\newcommand{\SU}{\mathrm{SU}}
+\newcommand{\SO}{\mathrm{SO}}
+
+\begin{document}
+
+\title[Gauge-fixing forests and the Bakry--\'Emery regime]{Gauge-fixing forests and the Bakry--\'Emery regime\\ for lattice Yang--Mills theory: an independent derivation}
+\author{Tristan Romanov}
+\date{October 2026}
+
+\begin{abstract}
+Shen, Zhu and Zhu showed that the Wilson lattice Yang--Mills measure with gauge group $\SU(N)$ and 't~Hooft-scaled
+action $N\beta\sum_p\Re\Tr Q_p$ satisfies the Bakry--\'Emery condition for $|\beta|<1/(16(d-1))$, which yields a
+log-Sobolev inequality and a mass gap. The threshold comes from a bound $8(d-1)$ on the Hessian of the action. Fixing
+the gauge on a forest of links shortens plaquettes and lowers the plaquette-wise Cauchy--Schwarz constant to
+$c_F=\max_e\sum_{p\ni e}k_p$, where $k_p$ is the number of free links in $p$. This idea, with a sharper constant
+$29/2$ in $d=4$ and for all compact simple groups, and the sharp un-gauge-fixed bound $4d$ in every dimension, were
+obtained earlier in unrefereed preprints of Bhattacharjee, Bhattacharya and Lockwood. We give an independent
+derivation of the combinatorial part. We determine the minimum of $c_F$ over all gauge-fixing forests: it is $18$ in
+$d=4$ and $11$ in $d=3$, with a kernel-checked Lean~4 certificate, and $8d-12$ for the temporal gauge; any improvement
+must therefore go beyond plaquette-wise Cauchy--Schwarz, as the cited work does. This gives $|\beta|<1/36$ in $d=4$
+(weaker than the $1/29$ and $1/32$ claimed in the cited work) and $|\beta|<1/22$ in $d=3$, which, as far as we know,
+is not covered by those claims. We also give a short proof that the un-gauge-fixed condition fails for
+$|\beta|\ge 1/(8d)$, and independent numerical evidence for the sharp bound $4d$ and for the lower estimate
+$9+\sqrt{17}$ on the gauge-fixed constant in $d=4$. All results are at strong coupling and do not bear on the
+continuum limit.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Let $\Lambda$ be a finite subgraph of $\mathbb{Z}^d$, $d\ge2$, with oriented edges $E$ and positively oriented plaquettes
+$P$. For $G=\SU(N)$, $N\ge2$, the Wilson lattice Yang--Mills measure in the 't~Hooft scaling is
+\begin{equation}\label{eq:measure}
+\mu_{\Lambda,\beta}(dQ)=Z^{-1}\exp\big(S(Q)\big)\prod_{e\in E}dQ_e,\qquad S(Q)=N\beta\sum_{p\in P}\Re\Tr Q_p ,
+\end{equation}
+with $dQ_e$ normalised Haar measure and $Q_p=Q_{e_1}Q_{e_2}Q_{e_3}^{*}Q_{e_4}^{*}$ the plaquette holonomy. In standard
+lattice notation $\beta_{\mathrm{W}}=2N/g^2=N^2\beta$.
+
+Shen, Zhu and Zhu~\cite{SZZ} introduced a stochastic-analysis approach: they verify the Bakry--\'Emery
+condition~\cite{BE}
+\begin{equation}\label{eq:BE}
+\Ric(v,v)-\Hess S(v,v)\ \ge\ K\,|v|^2\qquad\text{for all }Q\in G^E,\ v\in T_QG^E,
+\end{equation}
+with $K>0$ uniform in $\Lambda$. With the metric $|X|^2=\Tr(XX^*)$ on $\mathfrak{su}(N)$ the Ricci curvature of
+$\SU(N)$ is $\frac{N}{2}|X|^2$, and \cite[Lemma~4.1]{SZZ} shows $|\Hess S(v,v)|\le 8(d-1)N|\beta||v|^2$, so
+\eqref{eq:BE} holds with $K=\frac{N}{2}-8(d-1)N|\beta|$ whenever
+\begin{equation}\label{eq:SZZ}
+|\beta|<\frac{1}{16(d-1)} .
+\end{equation}
+From \eqref{eq:BE} they derive a log-Sobolev inequality, exponential ergodicity of the Langevin dynamics, uniqueness of
+the infinite-volume measure, exponential decay of correlations (a mass gap) and large-$N$ factorisation. The regime
+\eqref{eq:SZZ} improved on classical strong-coupling results~\cite{OS}. Later work extended the method to
+Yang--Mills--Higgs~\cite{SZZ24}, proved area law at $|\beta|<1/(8(d-1))$ by applying it to the slab
+$\sigma$-models of Durhuus--Fr\"ohlich~\cite{DF,CNS}, treated $\mathrm{U}(N)$~\cite{Nissim}, and proved a log-Sobolev inequality at all couplings in
+$d=2$~\cite{PS}.
+
+\subsection*{Results}
+The constant $8(d-1)$ arises because each link lies in $2(d-1)$ plaquettes and each plaquette has four links: a
+plaquette with $k$ links contributes $k$ to the Hessian coefficient of each of its links. Our observation is that the
+four links need not all be free. Fixing the gauge on a forest $F\subset E$ (setting $Q_e=I$ for $e\in F$) is exact for
+gauge-invariant observables (Lemma~\ref{lem:gauge}) and replaces each plaquette by a loop with $k_p=4-|p\cap F|$ free
+links. The Hessian of the gauge-fixed action then obeys (Proposition~\ref{prop:hess})
+\[
+|\Hess S^F(v,v)|\ \le\ c_F\,N|\beta|\,|v|^2,\qquad c_F=\max_{e\notin F}\ \sum_{p\ni e}k_p .
+\]
+\begin{itemize}
+\item The temporal gauge gives $c_F=8d-12$ in every dimension (Example~\ref{ex:temporal}).
+\item In $d=4$ there is a period-$2$ forest in which every plaquette contains exactly one fixed link, so
+$c_F=6\cdot 3=18$; in $d=3$ there is a period-$3$ forest with $c_F=11$ (Theorem~\ref{thm:forests}).
+\item These values are optimal among all gauge-fixing forests, \emph{for the plaquette-wise Cauchy--Schwarz
+method}, even for the sharpest constant that method can give (the Perron eigenvalue of the free-edge incidence
+matrix): an integrality argument gives the lower bound $11$ in $d=3$ and $18$ in $d=4$ for every forest
+(Proposition~\ref{prop:lower}). They are not lower bounds for the gauge-fixed Hessian itself.
+\end{itemize}
+
+\subsection*{Relation to prior work}
+After this work was done we found that the forest idea had appeared earlier, with stronger results, in unrefereed
+preprints by Bhattacharjee, Bhattacharya and Lockwood~\cite{BBL,BB-zen}, which we have not refereed in detail. They use a
+forest in $d=4$ with exactly one fixed link per plaquette (as in our Theorem~\ref{thm:forests}(a)), and bound the
+mixed second derivatives of each plaquette directly rather than by Cauchy--Schwarz over its free links. They claim
+$|\Hess S^F|\le\frac{29}{2}N|\beta|$, hence $|\beta|<1/29$ for $\SU(N)$, together with extensions to every compact
+simple group, and they report that the optimal gauge-fixed constant lies between $9+\sqrt{17}\approx13.12$ and
+$29/2$. A companion paper~\cite{BB-sharp} claims the sharp un-gauge-fixed bound $|\Hess S|\le 4d\,N|\beta|$ in
+every dimension, i.e.\ our Conjecture~\ref{conj}, which gives $|\beta|<1/(8d)$, and claims Dobrushin-type regimes
+beyond both. If these claims hold, our $d=4$ result ($1/36$) is superseded both by their forest bound ($1/29$) and
+by the un-gauge-fixed $1/32$. What remains here is: an independent derivation of the forest construction; the
+optimality of $18$ and $11$ within plaquette-wise Cauchy--Schwarz, which explains why their finer
+block bound is needed; the $d=3$ forest with $|\beta|<1/22$, which improves on $1/24=1/(8\cdot3)$ and which we
+did not find in their work; a Lean certificate for the combinatorics; and independent numerics consistent with
+their claims (Section~\ref{sec:limits}, and Remark~\ref{rem:identity}).
+
+\begin{theorem}\label{thm:main}
+Let $G=\SU(N)$, $N\ge2$, and let $F$ be one of the forests of Theorem~\ref{thm:forests}. Let $\Lambda$ be a box of
+$\mathbb{Z}^d$ with free boundary conditions. If
+\[
+|\beta|<\frac{1}{36}\ \ (d=4),\qquad |\beta|<\frac{1}{22}\ \ (d=3),\qquad |\beta|<\frac{1}{16d-24}\ \ (d\ge2,\ \text{temporal gauge}),
+\]
+then the gauge-fixed measure $\mu^F_{\Lambda,\beta}$ satisfies the Bakry--\'Emery condition with
+$K=\frac{N}{2}-c_F N|\beta|>0$, uniformly in $\Lambda$. In particular it satisfies a log-Sobolev and a Poincar\'e
+inequality with constant $1/K$, and for gauge-invariant $f\in L^2(\mu_{\Lambda,\beta})$
+\[
+\operatorname{Var}_{\mu_{\Lambda,\beta}}(f)\le \frac{1}{K}\int\sum_{e\notin F}|\nabla_e \tilde f|^2\,d\mu^F_{\Lambda,\beta},
+\qquad \tilde f=f|_{Q_F=I}.
+\]
+Moreover, the arguments of \cite[Theorem~1.2, Corollary~1.6]{SZZ} apply to $\mu^F$ and give exponential decay of
+correlations of local gauge-invariant observables, uniformly in $\Lambda$, and uniqueness of the infinite-volume limit
+of gauge-invariant expectations.
+\end{theorem}
+
+For $\SO(N)$, $N\ge3$, the same holds with $\frac{N}{2}$ replaced by $\frac{N-2}{4}$, i.e.\ for $|\beta|<\frac{N-2}{4Nc_F}$.
+
+In standard normalisation, Theorem~\ref{thm:main} covers $\beta_{\mathrm W}<N^2/36$ in $d=4$, i.e.\
+$\beta_{\mathrm W}<0.111$ for $\SU(2)$ and $\beta_{\mathrm W}<0.25$ for $\SU(3)$, against $0.083$ and $0.1875$
+from~\eqref{eq:SZZ}; this is weaker than the $1/29$ claimed in~\cite{BBL}. In $d=3$ the regime grows from $1/32$
+to $1/22$.
+
+\subsection*{Limits of the method}
+Section~\ref{sec:limits} records how far the Bakry--\'Emery route can go. Without gauge fixing, \eqref{eq:BE} fails
+for $|\beta|\ge 1/(8d)$: at a $\pi$-flux configuration (for $\beta>0$) or the trivial one (for $\beta<0$) the Hessian
+reaches $4d\,N|\beta|$ (Proposition~\ref{prop:obstruction}). Adversarial numerical maximisation for $\SU(2)$ in $d=2,3$ approaches $4d$ from below,
+and we conjecture that $4d$ is the exact supremum on $\mathbb{Z}^d$ (Conjecture~\ref{conj}); a proof is claimed
+in~\cite{BB-sharp}. The conjecture would give the regime $|\beta|<1/(8d)$ without gauge fixing. In $d=3$ the forest bound already does better ($1/22>1/24$); in $d=4$ the
+conjecture would give $1/32$, somewhat beyond the proven $1/36$. In general the forest lower bound $2(d-1)\varphi(s_*)/s_*\ge 8(d-1)^2/d$ of Proposition~\ref{prop:lower} is
+below $4d$ only for $d\le3$.
+
+\subsection*{What this is not}
+All statements concern the lattice theory at fixed lattice spacing and strong coupling. They do not address the
+continuum limit $\beta_{\mathrm W}\to\infty$ or the Clay problem~\cite{JW}; and, in view of~\cite{BBL,BB-sharp}, the
+improvement over~\cite{SZZ} in $d=4$ is not new.
+
+\section{Exact gauge fixing on a forest}
+
+A gauge transformation $g\in G^{V}$ acts by $(g\cdot Q)_{(x,y)}=g_xQ_{(x,y)}g_y^{-1}$; $S$ and $\mu_{\Lambda,\beta}$ are
+invariant. A function $f$ on $G^E$ is gauge-invariant if $f(g\cdot Q)=f(Q)$ for all $g$.
+
+\begin{definition}
+For a forest $F\subset E$ (a set of edges containing no cycle) let $E'=E\setminus F$ and define on $G^{E'}$
+\[
+\mu^F_{\Lambda,\beta}(dQ')=Z_F^{-1}\exp\big(S^F(Q')\big)\prod_{e\in E'}dQ'_e,\qquad S^F(Q')=S(I_F,Q').
+\]
+\end{definition}
+
+\begin{lemma}\label{lem:gauge}
+For every gauge-invariant bounded measurable $f$,
+$\int f\,d\mu_{\Lambda,\beta}=\int f(I_F,\cdot)\,d\mu^F_{\Lambda,\beta}$.
+\end{lemma}
+
+\begin{proof}
+Root each component of $F$ at a vertex $r$ and set $g_r=I$; for an edge $(x,y)\in F$ with $x$ closer to the root,
+set $g_y=g_xQ_{(x,y)}$ (and $g_y=g_xQ_{(y,x)}^{-1}$ for the opposite orientation). Vertices not met by $F$ get
+$g=I$. Since $F$ is a forest this is well defined, $g$ depends only on $Q_F$, and $(g\cdot Q)_e=I$ for $e\in F$. By
+invariance, $\int f e^{S}dQ=\int f(g\cdot Q)e^{S(g\cdot Q)}dQ$. For fixed $Q_F$ the map
+$Q_{E'}\mapsto(g\cdot Q)_{E'}$ is a product of left and right translations, which preserve Haar measure. Integrating
+first over $Q_{E'}$ and then over $Q_F$ (a probability measure) gives $\int f(I_F,Q')e^{S^F(Q')}dQ'$. The same
+computation with $f=1$ identifies the normalisations.
+\end{proof}
+
+\begin{remark}
+On a torus the temporal links form closed lines, so the temporal gauge cannot be imposed everywhere. This is why
+Theorem~\ref{thm:main} uses boxes with free boundary conditions (or $\mathbb{Z}^d$).
+\end{remark}
+
+\section{The Hessian of the gauge-fixed action}
+
+We follow \cite{SZZ}. Tangent vectors are $v=(X_eQ_e)_{e\in E'}$, where $X_e\in\mathfrak{su}(N)$,
+and $|v|^2=\sum_e\Tr(X_eX_e^*)$; along the geodesics $t\mapsto e^{tX_e}Q_e$ one has $\Hess S^F(v,v)=\frac{d^2}{dt^2}S^F$.
+
+\begin{lemma}\label{lem:loop}
+Let $\ell$ be a loop whose holonomy is a product of $k$ free link variables (each appearing once, possibly inverted)
+and fixed unitary matrices, and $\Phi=\Re\Tr(\text{holonomy})$. Then
+$|\Hess\Phi(v,v)|\le\big(\sum_{e\in\ell}|X_e|\big)^2\le k\sum_{e\in\ell}|X_e|^2$.
+\end{lemma}
+
+\begin{proof}
+Differentiating twice inserts either one factor $X_e^2$ at the position of $e$, or two factors $X_e$, $X_{e'}$ at the
+positions of $e\neq e'$ (each unordered pair twice). Every resulting term has the form $\Re\Tr(A Y B Y')$ with
+$A,B$ unitary and $Y,Y'\in\{\pm X_e,\pm X_{e'}\}$, so by Cauchy--Schwarz for the Hilbert--Schmidt inner product it is
+at most $|X_e||X_{e'}|$ in absolute value. Summing gives $(\sum_e|X_e|)^2$, and Cauchy--Schwarz gives the second
+inequality.
+\end{proof}
+
+\begin{proposition}\label{prop:hess}
+For every $Q'\in G^{E'}$ and $v$,
+\[|\Hess S^F(v,v)|\le N|\beta|\sum_{e\in E'}c_e|X_e|^2\le c_F N|\beta||v|^2,\]
+where
+$c_e=\sum_{p\ni e}k_p$, $k_p=|p\setminus F|$ and $c_F=\max_{e\in E'}c_e$.
+\end{proposition}
+
+\begin{proof}
+Apply Lemma~\ref{lem:loop} to each plaquette with $k=k_p$ and sum:
+$\sum_p k_p\sum_{e\in p\setminus F}|X_e|^2=\sum_{e\in E'}|X_e|^2\sum_{p\ni e}k_p$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+$G^{E'}$ is a product of copies of $\SU(N)$, so $\Ric(v,v)=\frac{N}{2}|v|^2$, and Proposition~\ref{prop:hess} gives
+\eqref{eq:BE} for $S^F$ with $K=\frac{N}{2}-c_FN|\beta|$, which is positive under the stated conditions by
+Theorem~\ref{thm:forests} and Example~\ref{ex:temporal}. The log-Sobolev and Poincar\'e inequalities follow from the
+Bakry--\'Emery criterion~\cite{BE}. The variance bound follows from Lemma~\ref{lem:gauge} applied to $f$ and $f^2$.
+
+For the remaining statements we argue by adaptation rather than repeat the proofs: the proofs of \cite[Theorem~1.2]{SZZ} (ergodicity and uniqueness) and
+\cite[Corollary~4.11]{SZZ} (decay of correlations) use, besides \eqref{eq:BE} with uniform $K$, only that the action
+is a sum of finite-range terms with uniformly bounded derivatives, through the commutator estimate
+\cite[Lemma~4.10]{SZZ} and the gradient bound \cite[Lemma~4.9]{SZZ}. $S^F$ is a sum of loops of length at most four
+with the same derivative bounds, so these proofs apply to $\mu^F$ with constants of the same form. (The Bakry--\'Emery condition, the log-Sobolev and
+Poincar\'e inequalities and the variance bound are proved in full above; uniqueness and decay of correlations are
+obtained by this adaptation.) For gauge-invariant local $f,g$,
+$\operatorname{Cov}_{\mu}(f,g)=\operatorname{Cov}_{\mu^F}(\tilde f,\tilde g)$ by Lemma~\ref{lem:gauge}, and $\tilde f$,
+$\tilde g$ are local. For $\SO(N)$ replace $\frac{N}{2}$ by $\frac{N-2}{4}$~\cite{SZZ}.
+\end{proof}
+
+\section{Optimal forests}
+
+\begin{definition}
+Label the coordinate directions $0,\dots,d-1$. For $\mu:\mathbb{Z}^d\to\{0,\dots,d-1\}$ let
+$F_\mu=\{(x-e_{\mu(x)},x):x\in\mathbb{Z}^d\}$.
+\end{definition}
+
+The coordinate sum strictly decreases along $x\mapsto x-e_{\mu(x)}$, so $F_\mu$ contains no cycle: it is a forest for
+every $\mu$, with exactly one fixed edge entering each vertex. Its restriction to a box is again a forest. The edge
+$(y,y+e_a)$ is fixed iff $\mu(y+e_a)=a$, and the plaquette $(y;a,b)$ contains
+\[
+f_p=[\mu(y+e_a)=a]+[\mu(y+e_b)=b]+[\mu(y+e_a+e_b)\in\{a,b\}]
+\]
+fixed edges. All quantities are periodic when $\mu$ is.
+
+\begin{example}\label{ex:temporal}
+$\mu\equiv0$ (temporal gauge, with time direction $0$): spatial plaquettes have $k_p=4$, temporal ones $k_p=2$; a spatial edge lies in
+$2(d-2)$ spatial and two temporal plaquettes, so $c_F=8(d-2)+4=8d-12$.
+\end{example}
+
+\begin{theorem}\label{thm:forests}
+\begin{enumerate}
+\item[(a)] ($d=4$.) Let $\mu$ be $2$-periodic, with values on $\{0,1\}^4$ (lexicographic order, first coordinate most
+significant, directions labelled $0,\dots,3$) given by the string \texttt{0212331001332120}. Then every plaquette
+contains exactly one edge of $F_\mu$, and $c_e=18$ for every free edge.
+\item[(b)] ($d=3$.) Let $\mu$ be $3$-periodic, with values on $\{0,1,2\}^3$ given by the string
+\[\texttt{210102120102120210120210102}.\] Then $c_e\le 11$ for every free edge, with equality attained.
+\end{enumerate}
+On a box with free boundary conditions, plaquettes outside the box are simply absent, so $c_F\le 18$, respectively
+$\le 11$.
+\end{theorem}
+
+\begin{proof}
+Both statements are finite checks over one period cell. They were found by a CP-SAT search and verified by an
+independent script and by a kernel-checked Lean~4 computation (Appendix~\ref{app:lean}). The Lean file also confirms
+that the temporal gauge has $c_e=20$ in $d=4$, and tamper controls (a changed pattern, or $11$ replaced by $10$) are
+rejected.
+\end{proof}
+
+\begin{proposition}\label{prop:lower}
+Let $\varphi:[0,4]\to\mathbb{R}$ be the piecewise-linear interpolation of $k\mapsto k^2$ at the integers, and
+$s_*=4(d-1)/d$. For every forest $F$ on the box $\{0,\dots,L-1\}^d$, the matrix $M_F$ on free edges defined by
+$M_F[e,e']=\#\{p:e,e'\in p\}$ satisfies
+\[
+c_F\ \ge\ \rho(M_F)\ \ge\ 2(d-1)\frac{\varphi(s_*)}{s_*}-O(1/L).
+\]
+The right-hand side equals $11$ in $d=3$ and $18$ in $d=4$. Since Lemma~\ref{lem:loop} summed over plaquettes gives
+$|\Hess S^F(v,v)|\le N|\beta|\langle|X|,M_F|X|\rangle\le\rho(M_F)N|\beta||v|^2$, and $\rho(M_F)$ is the best constant
+this inequality can give, the forests of Theorem~\ref{thm:forests} are optimal for this method in $d=3$ and $d=4$.
+\end{proposition}
+
+\begin{proof}
+$c_F\ge\rho(M_F)$ because $c_F$ is the maximal row sum of the nonnegative matrix $M_F$. Testing $M_F$ against the
+constant vector gives $\rho(M_F)\ge\frac{1}{|E'|}\sum_{e\in E'}c_e=\frac{1}{|E'|}\sum_pk_p^2$, where $E'=E\setminus F$.
+Let $\bar k=\frac{1}{|P|}\sum_pk_p$. Since the $k_p$ are integers and $\varphi$ is the convex minorant of $k^2$ on
+integers, $\sum_pk_p^2\ge|P|\varphi(\bar k)$. Moreover $\sum_pk_p=\sum_{e\in E'}n_e$, where $n_e=2(d-1)$ except for
+$O(L^{d-1})$ boundary edges, so $|E'|=\frac{|P|\bar k}{2(d-1)}+O(L^{d-1})$ and
+$\rho(M_F)\ge2(d-1)\varphi(\bar k)/\bar k-O(1/L)$. The function $\varphi(s)/s$ is nondecreasing on $[1,4]$ (on
+$[m,m+1]$ it equals $(2m+1)-m(m+1)/s$). Since $F$ is a forest, $|E'|\ge|E|-|V|=(d-1)L^d-O(L^{d-1})$, and
+$|P|=\binom{d}{2}L^d+O(L^{d-1})$, so $\bar k\ge s_*-O(1/L)$. Finally
+$\varphi(8/3)=\frac{22}{3}$ gives $2\cdot2\cdot\frac{22/3}{8/3}=11$ for $d=3$, and $\varphi(3)=9$ gives
+$2\cdot3\cdot3=18$ for $d=4$.
+\end{proof}
+
+\begin{remark}
+Equality in Proposition~\ref{prop:lower} requires one fixed edge per vertex and every $k_p$ to lie in
+$\{\lfloor s_*\rfloor,\lceil s_*\rceil\}$ in the right proportions. In $d=4$ ($s_*=3$) this forces exactly one fixed
+edge in every plaquette. In $d=3$ ($s_*=8/3$) it forces a $2:1$ mix of plaquettes with one and with two fixed edges.
+Both are realised by Theorem~\ref{thm:forests}: on the $6^3$ box, $300$ plaquettes have one fixed edge and $150$ have
+two.
+\end{remark}
+
+\section{Limits of the Bakry--\'Emery route}\label{sec:limits}
+
+\begin{proposition}\label{prop:obstruction}
+Let $G=\SU(N)$, $N\ge2$, $\Lambda=\mathbb{Z}^d$ (or a torus of even side). Then for every
+$\beta\neq0$, $\sup_{Q,v}\Hess S(v,v)/|v|^2\ge4d\,N|\beta|$. Consequently \eqref{eq:BE} without gauge fixing fails
+for every $K>0$ when $|\beta|\ge1/(8d)$.
+\end{proposition}
+
+\begin{proof}
+Let $J=\mathrm{diag}(-1,-1,1,\dots,1)\in\SU(N)$ and $Q_{(x,x+e_\mu)}=J^{x_0+\dots+x_{\mu-1}}$. All links commute and
+every plaquette equals $J$. Take $X_e=\xi_e Z$ with $\xi\in\ell^2(E;\mathbb{R})$ and $Z$ in the $\mathfrak{su}(2)$
+block, so that $JZ=ZJ=-Z$ and $|Z|=1$. All conjugations act trivially on $Z$, and the second derivative of
+$\Re\Tr Q_p$ is $\Re\Tr\big((d\xi)_p^2Z^2J\big)=(d\xi)_p^2$, where $d$ is the lattice coboundary. Hence
+$\Hess S(v,v)=N\beta\|d\xi\|^2$, and $\sup_\xi\|d\xi\|^2/\|\xi\|^2=4d$ (Fourier mode $k=(\pi,\dots,\pi)$; on
+$\mathbb{Z}^d$ as a supremum). For $\beta<0$ use $Q\equiv I$: then $\Re\Tr\big((d\xi)_p^2Z^2\big)=-(d\xi)_p^2$ and
+$\Hess S(v,v)=N|\beta|\|d\xi\|^2$. Since $\Ric(v,v)=\frac{N}{2}|v|^2$ is constant, \eqref{eq:BE} with $K>0$ forces
+$4d|\beta|<\frac{1}{2}$.
+\end{proof}
+
+\begin{conjecture}\label{conj}
+For $G=\SU(N)$, $\Lambda=\mathbb{Z}^d$ and every configuration, $\Hess S(v,v)\le 4d\,N|\beta||v|^2$.
+\end{conjecture}
+
+\noindent A proof of Conjecture~\ref{conj}, for $\SU(N)$, $\SO(N)$ and $\mathrm{U}(N)$ in every $d$, is claimed
+in~\cite{BB-sharp}; we have not checked it, and we keep the statement as a conjecture here.
+
+
+\noindent\emph{Evidence and a caution.} For $\SU(2)$ we computed the exact Hessian, checked it against finite
+differences, and maximised $\lambda_{\max}$ over configurations by annealed single-link ascent. The starting points
+were Haar-random, centre-valued, abelian and perturbed $\pi$-flux configurations. On the tori $(L,d)=(2,2),(4,2),(2,3),(3,3),(2,4)$
+every run stayed below $4d$, approaching it from below (best values $7.9999$, $11.993$ and $15.955$ in
+$d=2,3,4$). A shorter run on the $L=3$, $d=4$ torus also stayed below $16$ but had not converged (best $13.1$),
+so it is weak evidence. For abelian groups the bound is immediate, since there
+$\Hess S(v,v)=-N\beta\sum_p\cos\theta_p(d\xi)_p^2$; the difficulty in a proof is the commutator term. The naive
+covariant analogue of $\|d\|^2\le4d$ is false: for the covariant coboundary
+$(d_AX)_p=X_{x,\mu}+\mathrm{Ad}(Q_{x,\mu})X_{x+\mu,\nu}-X_{x,\nu}-\mathrm{Ad}(Q_{x,\nu})X_{x+\nu,\mu}$, ascent on the
+$L=2$, $d=4$ torus reaches $\|d_A\|^2\approx16.2>16$ (at that configuration the Hessian is only $\approx8.4$, and ascent
+started from it reaches $14.6$). Any proof of Conjecture~\ref{conj} therefore has to use the
+interplay between the commutator term and the trace weight $\Re\Tr(\,\cdot\,Q_p)$, not a covariant norm bound alone.
+We state the conjecture for $\mathbb{Z}^d$; on very small tori (where distinct plaquettes may share two edges) it may
+fail, although our searches on the $L=2$ tori found no violation.
+
+Conjecture~\ref{conj} would give the un-gauge-fixed regime $|\beta|<1/(8d)$. This is weaker than the forest bound in
+$d=3$ and stronger in $d\ge4$; in $d=4$ it would be $1/32$ against our $1/36$.
+
+\begin{remark}\label{rem:identity}
+For the gauge-fixed action in $d=4$ the Cauchy--Schwarz constant $18$ is not attained. At $Q\equiv I$, with the
+forest of Theorem~\ref{thm:forests}(a) on $L^4$ boxes and $\SU(2)$, the largest eigenvalue of $-\Hess S^F/(N\beta)$ is
+$10.44$, $11.54$ and $12.11$ for $L=3,4,5$, increasing towards $9+\sqrt{17}\approx13.12$. This agrees with the lower
+estimate reported in~\cite{BBL}.
+\end{remark}
+
+\section{Discussion}
+
+The mechanism behind the forest bound is the same one behind the factor-two gain of~\cite{CNS} for the slab
+$\sigma$-models: shorter interaction loops give smaller Cauchy--Schwarz constants. Here it is implemented on the full
+$d$-dimensional measure by a choice of gauge, and the best choice is a combinatorial design problem that can be solved
+exactly within the plaquette-wise Cauchy--Schwarz method; going further requires bounding
+each plaquette's mixed second derivatives as a block, as in~\cite{BBL}. The remaining gap between these thresholds and the weak-coupling regime relevant for the continuum limit
+($\beta_{\mathrm W}\gtrsim 2.3$ for $\SU(2)$ in $d=4$) is large, and closing it would require ideas of a different
+nature, such as a multiscale analysis.
+
+\appendix
+\section{Computer verification}\label{app:lean}
+The code is in the directory \texttt{earlier-note} of the public repository
+\[\text{\url{https://github.com/romanov360/yang-mills-3d-forest-gauge}}:\] \texttt{bakry\_emery} holds the following files and
+\texttt{results} their outputs.
+\begin{itemize}
+\item \texttt{ForestCounting.lean}: Lean~4 (no Mathlib). It checks by \texttt{decide +kernel} that the $d=4$ pattern
+has exactly one fixed edge in every plaquette and $c_e=18$ on every free edge, that the $d=3$ pattern has
+$c_e\le11$, and that the temporal gauge has $c_e=20$ in $d=4$. The only axiom used is \texttt{propext}.
+\item \texttt{verify\_forest.py}: an independent check. It confirms the forest property by union--find, the fixed-edge
+counts and $c_e$ on $4^4$, $6^4$ and $6^3$ boxes, and exactness of gauge fixing (all forest links become $I$ and the
+action is unchanged). It also checks that the gauge-fixed $\SU(2)$ Hessian obeys the bound and agrees with finite
+differences.
+\item \texttt{forest\_search.py}: the CP-SAT search. \texttt{perron.py}: the Perron eigenvalues $\rho(M_F)$ ($11$, $18$,
+and $20$ for the temporal gauge in $d=4$).
+\item \texttt{hessian.py}, \texttt{fasthess.py}, \texttt{search2.py}: the exact Hessian and the adversarial search
+behind Conjecture~\ref{conj}.
+\end{itemize}
+
+\subsection*{Acknowledgements and AI disclosure}
+An AI assistant (Claude, Anthropic) was used for the literature search, for the numerical and Lean computations, and
+for drafting. The author is responsible for the content. We thank the authors of~\cite{BBL,BB-sharp} for making
+their work public.
+
+\begin{thebibliography}{99}
+\bibitem{BB-sharp} D.~Bhattacharjee and U.~Bhattacharya, Sharp curvature and finite-box criteria for lattice
+Yang--Mills theory, preprint, October 2026 (unrefereed); distributed with~\cite{BBL}.
+\bibitem{BB-zen} D.~Bhattacharjee and U.~Bhattacharya, Lattice Yang--Mills theory: spacing-uniform obstructions, the
+mass gap up to the Dobrushin ceiling and in a forest gauge, and Lean certificate, Zenodo, v3.4.0, 21 October 2026,
+doi:10.5281/zenodo.23541099 (unrefereed); see also doi:10.5281/zenodo.23449466.
+\bibitem{BBL} D.~Bhattacharjee, U.~Bhattacharya and J.~M.~Lockwood, Yang--Mills mass gap in 4D: lattice $\SU(N)$ and every
+compact simple group, Zenodo, v3.19.0, October 2026, doi:10.5281/zenodo.23729004 (unrefereed); earlier version
+``Mass gap of four-dimensional lattice Yang--Mills theory in a forest gauge''; code at
+\texttt{github.com/creelie/4Y-M}.
+\bibitem{BE} D.~Bakry and M.~\'Emery, Diffusions hypercontractives, in \emph{S\'eminaire de Probabilit\'es XIX},
+Lecture Notes in Math.\ 1123, Springer, 1985, 177--206.
+\bibitem{CNS} S.~Cao, R.~Nissim and S.~Sheffield, Dynamical approach to area law for lattice Yang--Mills,
+arXiv:2509.04688.
+\bibitem{DF} B.~Durhuus and J.~Fr\"ohlich, A connection between $\nu$-dimensional Yang--Mills theory and
+$(\nu-1)$-dimensional, non-linear $\sigma$-models, Comm.\ Math.\ Phys.\ 75 (1980), 103--151.
+\bibitem{JW} A.~Jaffe and E.~Witten, Quantum Yang--Mills theory, Clay Mathematics Institute Millennium Problem
+description, 2000.
+\bibitem{Nissim} R.~Nissim, $\mathrm{U}(N)$ lattice Yang--Mills in the 't~Hooft regime, arXiv:2510.22788.
+\bibitem{OS} K.~Osterwalder and E.~Seiler, Gauge field theories on a lattice, Ann.\ Physics 110 (1978), 440--471.
+\bibitem{PS} J.~Piazza and H.~Shen, Log-Sobolev inequality for 2D $\SU(N)$ lattice gauge theory at all couplings,
+arXiv:2610.35286.
+\bibitem{SZZ} H.~Shen, R.~Zhu and X.~Zhu, A stochastic analysis approach to lattice Yang--Mills at strong coupling,
+Comm.\ Math.\ Phys.\ 400 (2023), 805--851; arXiv:2204.12737.
+\bibitem{SZZ24} H.~Shen, R.~Zhu and X.~Zhu, Langevin dynamics of lattice Yang--Mills--Higgs and applications,
+arXiv:2401.13299.
+\end{thebibliography}
+
+\end{document}

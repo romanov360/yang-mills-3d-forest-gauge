@@ -1,0 +1,3 @@
+L=2 d=3: haar 11.98691, haar 11.99047, centre 11.98925, u1 11.98832, piflux+noise 11.99270  | best 11.99270  4d = 12  SZZ 8(d-1) = 16  within 4d
+L=3 d=3: haar 11.91786, haar 11.79096, centre 11.76546, u1 11.64988, piflux+noise 11.70956  | best 11.91786  4d = 12  SZZ 8(d-1) = 16  within 4d
+L=2 d=4: haar 15.92288, haar 15.94908, centre 15.93190, u1 15.95476, piflux+noise 15.94581  | best 15.95476  4d = 16  SZZ 8(d-1) = 24  within 4d

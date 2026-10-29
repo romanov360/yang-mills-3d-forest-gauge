@@ -1,0 +1,8 @@
+1. largest ||dM|| / ((4+|k23|) max|dphi|) over 81 x 2000 random pairs: 0.7500 (must be <= 1)
+2. tightest plaquette 21: least eigenvalue on a 128 x 128 grid 0.00790
+   delta = 0.016: least grid eigenvalue -0.00810
+     centre: rejected (plaquette 21: not proved at depth 8 (1832876 squares left))
+     box: rejected (plaquette 21: not proved at depth 8 (1798306 squares left))
+   delta = 0.004: least grid eigenvalue 0.00390
+     centre: accepted (depth 6, 93880 squares)
+     box: accepted (depth 6, 58848 squares)
